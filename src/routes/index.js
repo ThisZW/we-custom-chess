@@ -8,6 +8,7 @@ import UserList from '../containers/User/UserList';
 import LoginForm from '../containers/Home/Login';
 import RegisterForm from '../containers/Home/Register';
 import NotFound from '../common/NotFound/NotFound';
+import CatchTheLionBoard from '../components/Game/CatchTheLion';
 
 const history = createBrowserHistory();
 const store = configure();
@@ -23,6 +24,7 @@ class RootRouter extends Component {
             <Route path='/login' component={LoginForm} />
             <Route path='/register' component={RegisterForm} />
             <Route path='/notFound' component={NotFound} />
+            <Route path='/chasethelion' component={CatchTheLionBoard} />
             <Redirect from='' to="/notFound" />
           </Switch>
         </Router>

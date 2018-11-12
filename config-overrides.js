@@ -1,17 +1,18 @@
 /* config-overrides.js */
 const { injectBabelPlugin } = require('react-app-rewired');
 const rewireLess = require('react-app-rewire-less');
-const rewireCssModules = require('react-app-rewire-css-modules');
+const rewireReactHotLoader = require('react-app-rewire-hot-loader')
 
 module.exports = function override(config, env) {
-   config = injectBabelPlugin(['import', { libraryName: 'antd', style: true }], config);
-   config = rewireCssModules(config, env);
-   config = rewireLess.withLoaderOptions({
-     modifyVars: {
-       "@primary-color": "#00BFFF",
-       "@input-height-base": "40px",
-       "@btn-height-base": "40px",
-     },
+  config = rewireReactHotLoader(config, env)
+  config = injectBabelPlugin(['import', { libraryName: 'antd', style: true }], config);
+  config = rewireLess.withLoaderOptions({
+    modifyVars: {
+      "@primary-color": "#00BFFF",
+      "@input-height-base": "40px",
+      "@btn-height-base": "40px",
+    },
+     javascriptEnabled: true,
    })(config, env);
   return config;
 };
