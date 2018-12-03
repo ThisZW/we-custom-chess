@@ -30,22 +30,14 @@ class App extends Component {
 
   render() {
     return (
-      <Layout>
-        <Header style={{minHeight:'100h', color: 'white',textAlign: 'center',fontSize:25}}>
-          We Custome Chess
-        </Header>
-        <Layout style={{height:'1000px'}} >
-        <Content width="80%" style={{minHeight:'1000h', margin: '24px 16px 0',alignItems:'center',display:'flex',justifyContent:'center'}}>
-          <Link to='/userList'><Button type='primary'>joint a game room</Button></Link>
-          <Link to='/Board'><Button type='primary'>Create game</Button></Link>
-        </Content>
-
-        <Sider width="20%" style={{background: 'white', color: 'black',textAlign:'center',fontSize:20}}>
-        <OnlineUserList />
-        </Sider>
-
-        </Layout>
-
+      <Layout style={{height:'1000px'}} >
+      <Content width="80%" style={{minHeight:'1000h', margin: '24px 16px 0',alignItems:'center',display:'flex',justifyContent:'center'}}>
+        <Link to='/userList'><Button type='primary'>joint a game room</Button></Link>
+        <Link to='/Board'><Button type='primary'>Create game</Button></Link>
+      </Content>
+      <Sider width="20%" style={{background: 'white', color: 'black',textAlign:'center',fontSize:20}}>
+      <OnlineUserList />
+      </Sider>
       </Layout>
     );
   }

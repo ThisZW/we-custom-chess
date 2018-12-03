@@ -80,7 +80,6 @@ class CatchTheLionBoard extends Component {
   handleDragStop = (evt, drag, id) => {
     let board = this.state.chessBoard
     let {row, col} = this.state.selectedBox
-
     //check if it is good to move
     if(row <= rowCount && col <=colCount){
       board[id].row = row
@@ -135,10 +134,25 @@ class CatchTheLionBoard extends Component {
     })
   }
 
+  //**********************
+  //  here upload this game board to the sever
+  //********************** */
+  submitBoard = () =>{
+    var tem = this.state.chessBoard
+    var saveGame = []
+    tem.forEach(function(item) {
+      if (item.alive === true){
+        saveGame.push(item)
+      }
+    });
+    console.log(saveGame);
+  }
+
+
   render(){
     console.log(styles.chessboard)
     return (
-      <div className="gameContainer">
+      <div className={styles.gameContainer}>
         <div className={styles.chessboard}>
           <ResizeAware
             ref={this.setInitialSquare}

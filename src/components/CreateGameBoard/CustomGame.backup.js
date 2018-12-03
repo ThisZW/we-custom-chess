@@ -144,7 +144,7 @@ class CatchTheLionBoard extends Component {
   }
 
   //**********************
-  //  here upload this game boad to the sever
+  //  here upload this game board to the sever
   //********************** */
   submitBoard=()=>{
     var tem = this.state.chessBoard
