@@ -1,9 +1,9 @@
 /* config-overrides.js */
 
 const { injectBabelPlugin } = require('react-app-rewired');
-const rewireLess = require('react-app-rewire-less');
 const rewireReactHotLoader = require('react-app-rewire-hot-loader')
 const rewireEslint = require('react-app-rewire-eslint');
+const rewireLess = require("react-app-rewire-less-modules");
 
 
 module.exports = function override(config, env) {
