@@ -18,12 +18,12 @@ class Board extends Component {
     this.state = {
         boardname:'',
         ChessBoard:'',
-        row: 5, 
-        col: 5, 
-        piece: "kaku", 
+        row: 5,
+        col: 5,
+        piece: "kaku",
         player: "a",
         alive: true,
-        initialChessBoard :[
+        initialChessBoard:[
           {row: 1, col: 1, chess: "hi", player: "b", alive: true},
           {row: 1, col: 2, chess: "ou", player: "b", alive: true},
           {row: 1, col: 3, chess: "kaku", player: "b", alive: true},
@@ -32,25 +32,20 @@ class Board extends Component {
           {row: 4, col: 1, chess: "hi", player: "a", alive: true},
           {row: 4, col: 2, chess: "ou", player: "a", alive: true},
           {row: 4, col: 3, chess: "kaku", player: "a", alive: true},
-          {row: 4, col: 3, chess: "kaku", player: "a", alive: true},
         ]
-    }
-
+      }
     this.handleColChange = this.handleColChange.bind(this)
     this.handleRowChange = this.handleRowChange.bind(this)
-
     }
 
     handleColChange(value){
-    this.setState({col: value});
-    this.setState({col: value});
-    console.log(this.state.col)
+      this.setState({col: value});
+      console.log(this.state.row, this.state.col)
     }
     
     handleRowChange(value){
-    this.setState({row: value});
-    this.setState({row: value});
-    console.log(this.state.row)
+      this.setState({row: value});
+      console.log(this.state.row, this.state.col)
     }
 
     handlePlayerChange = (value) => {
@@ -77,16 +72,16 @@ class Board extends Component {
         transform: this.state.player === 'b' ? 'scaleY(-1)' : 'none',
         width: '100%'
       }
-
+    
     return (
         <Layout>
           <Content>
-            <CustomeGame row={this.state.row} col={this.state.col} chessBoard={this.state.initialChessBoard }/>
+            <CustomeGame rowCount={this.state.row} colCount={this.state.col} turn={'both'} chessBoard={this.state.initialChessBoard }/>
           </Content>
           <Sider className={styles.sider}>
             <div>
-            <div>Columns: <InputNumber size="small" min={1} max={15} defaultValue={5} onChange={this.handleColChange} /></div>
-            <div>Rows: <InputNumber size="small" min={1} max={15} defaultValue={5} onChange={this.handleRowChange} /></div>
+            <div>Columns: <InputNumber size="small" min={1} max={15} defaultValue={this.state.col} onChange={this.handleColChange} /></div>
+            <div>Rows: <InputNumber size="small" min={1} max={15} defaultValue={this.state.row} onChange={this.handleRowChange} /></div>
             </div>
             <div>
             Player:&nbsp;
@@ -98,7 +93,7 @@ class Board extends Component {
             <div>
             <Select
               defaultValue={pieceData[0]}
-              style={{ width: 120 }}
+              style={{ width: 120 }}  
               onChange={this.handlePieceChange}
             >
               {pieceData.map(piece => <Option key={piece}>{piece}</Option>)}

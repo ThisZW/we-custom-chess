@@ -3,11 +3,11 @@ import CSSModules from 'react-css-modules';
 import PropTypes from 'prop-types';
 import styles from './CatchTheLion.module.less';
 import resizeAware from 'react-resize-aware';
-import Draggable from 'react-draggable';
+import Chess from './ChessPiece';
 
 const ResizeAware = resizeAware.default || resizeAware
 
-const initialChessBoard = 
+/*const initialChessBoard = 
 [
   {row: 2, col: 2, chess: "hi", player: "b", alive: true},
   {row: 2, col: 3, chess: "ou", player: "b", alive: true},
@@ -22,51 +22,35 @@ const initialChessBoard =
 
 
 const rowCount = 6
-const colCount = 5
+const colCount = 5*/
 
-const square = 100/colCount
-
-const boxStyles = {
-  width: `${square}%`,
-  paddingBottom: `${square}%`,
-  float: 'left',
-  position: 'relative',
-  pointerEvents: 'none',
-  border: '1px solid black'
-}
-const highlightBoxStyles = {
-  width: `${square}%`,
-  paddingBottom: `${square}%`,
-  float: 'left',
-  position: 'relative',
-  pointerEvents: 'none',
-  border: '1px solid black',
-  boxShadow: 'inset 0px 0px 12px 0px #000000'
-}
 
 @CSSModules(styles)
 class CatchTheLionBoard extends Component {
-  constructor(){
+  constructor(props){
     super()
     this.state = {
       player: null,
-      chessBoard : initialChessBoard,
+      chessBoard : props.chessBoard,
       squareWidth: null,
-      turn: null,
+      turn: props.turn,
       isMoving: false,
+      colCount: props.colCount,
+      rowCount: props.rowCount,
+      square: 100/props.colCount,
       selectedBox: {row: 0, col: 0} //by default
     }
   }
 
   setInitialSquare = (e) => {
     this.setState({
-      squareWidth: Math.round(e.state.width/colCount)
+      squareWidth: Math.round(e.state.width/this.state.colCount)
     })
   }
 
   handleResize = (e) => {
     this.setState({
-      squareWidth: Math.round(e.width/colCount)
+      squareWidth: Math.round(e.width/this.state.colCount)
     })
   }
 
@@ -79,12 +63,14 @@ class CatchTheLionBoard extends Component {
 
   handleDragStop = (evt, drag, id) => {
     let board = this.state.chessBoard
-    let {row, col} = this.state.selectedBox
+    const {row, col} = this.state.selectedBox
+    const {rowCount, colCount} = this.state
+    
     //check if it is good to move
     if(row <= rowCount && col <=colCount){
       board[id].row = row
       board[id].col = col
-      console.log(row, col) 
+      //console.log(row, col) 
     }
     
     //check if something is eaten
@@ -114,6 +100,26 @@ class CatchTheLionBoard extends Component {
   }
 
   renderBoxes = () =>{
+    const {square, rowCount, colCount} = this.state
+
+    const boxStyles = {
+      width: `${square}%`,
+      paddingBottom: `${square}%`,
+      float: 'left',
+      position: 'relative',
+      pointerEvents: 'none',
+      border: '1px solid black'
+    }
+    const highlightBoxStyles = {
+      width: `${square}%`,
+      paddingBottom: `${square}%`,
+      float: 'left',
+      position: 'relative',
+      pointerEvents: 'none',
+      border: '1px solid black',
+      boxShadow: 'inset 0px 0px 12px 0px #000000'
+    }
+
     let boxes = []
     for(let i=1; i<=rowCount; i++){
       for(let j=1; j<=colCount; j++){
@@ -128,7 +134,9 @@ class CatchTheLionBoard extends Component {
     return boxes
   }
 
+
   componentDidMount = () => {
+    if (this.state.turn !=='both')
     this.setState({
       turn: 'a'
     })
@@ -150,7 +158,8 @@ class CatchTheLionBoard extends Component {
 
 
   render(){
-    console.log(styles.chessboard)
+    console.log(this.state)
+    //console.log(styles.chessboard)
     return (
       <div className={styles.gameContainer}>
         <div className={styles.chessboard}>
@@ -166,7 +175,10 @@ class CatchTheLionBoard extends Component {
               onStart={this.handleDragStart}
               onStop={this.handleDragStop}
               className="piece"
-              disabled={this.state.turn !== v.player}
+              square={this.state.square}
+              rowCount={this.state.rowCount}
+              colCount={this.state.colCount}
+              disabled={this.state.turn !== v.player && this.state.turn !== 'both'}
               key={`piece${i}-${v.row}-${v.col}`} 
               chess={v.chess} player={v.player} 
               row={v.row} col={v.col} id={i} alive={v.alive}/>
@@ -178,45 +190,6 @@ class CatchTheLionBoard extends Component {
             <div className="player-b">b</div>
           </div>
       </div>
-    )
-  }
-}
-
-class Chess extends Component{
-
-  constructor(props){
-    super()
-  }
-
-  render(){
-    const {row, col, id, chess, player, alive, disabled} = this.props
-
-    const pieceStyle = {
-      width: `${square}%`,
-      paddingBottom: `${square}%`,
-      position: 'absolute',
-      padding: `${square*0.05}%`,
-      top: `${(row - 1) / rowCount * colCount * square}%`,
-      left: `${(col - 1) * square}%`,
-    }
-    
-    const pieceImgStyle = {
-      backgroundColor: player === 'a' ? '#007fe14d' : '#1ee1004d',
-      transform: player === 'b' ? 'scaleY(-1)' : 'none',
-      width: '100%'
-    }
-
-    return(
-      (alive &&
-      <Draggable
-        onStart={(evt, drag) => this.props.onStart(evt, drag, id)}
-        onDrag={(evt, drag) => this.props.onDrag(evt, drag, id)}
-        onStop={(evt, drag) => this.props.onStop(evt, drag, id)}
-        disabled={disabled}>
-        <div className="piece" style={pieceStyle}>
-          <img draggable="false" src={`assets/catchthelion/${chess}.png`} style={pieceImgStyle}/>
-        </div>
-      </Draggable>)
     )
   }
 }
