@@ -1,60 +1,59 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
-import { Button, Radio, Icon } from 'antd';
+import { Button, Radio, Icon,Popconfirm } from 'antd';
+import user from '../../redux/reducers/user/index';
+
+import SocketIOClient from 'socket.io-client';
+const socket = SocketIOClient('http://localhost:3003');
 
 class UserList extends Component {
   constructor(props) {
     super(props);
 
     this.state = { 
-        dataSource : [{
-            key: '1',
-            name: 'Mike',
-          }, {
-            key: '2',
-            name: 'John',
-          }], 
-        guestid: this.props.guestid,
-
+        users : [],
         };
 }
-  /*
+  
   componentDidMount() {
-    this.props.fetchAllUserList();
+    if (this.state.users !== this.props.users) {
+      this.setState({users:this.props.users});
+      console.log(this.state.users)
+    }
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ userList: nextProps.list });
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return this.state.userList !== nextState.userList; 
-  }
-  */
-
-    handleSizeChange = (e) => {
-    this.setState({ list: e.target.value });
+  componentWillReceiveProps(nextProps){
+    if (this.state.users !== nextProps.users) {
+        this.setState({users:nextProps.users});
+        this.forceUpdate();
+      }
   }
 
   render() {
       const onColumns = [{
         title: 'Online List',
         dataIndex: 'name',
-        key: 'name',
         color: 'white',
-      }];
+      },
+      { title: 'Acition', dataIndex: '', key: 'operation' ,render: (text,record,index)=>(
+        <span>
+        <Popconfirm title="sure invite?" onConfirm={() => this.props.invite(text.name)}>
+                   <button>
+                       <Icon type="delete"/></button>
+        </Popconfirm>
+      </span>        
+    ) },
+
+    ];
     
     return (
-        <div>
-        <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
-        {this.state.guestid}
-        </div>
+
         <div>
             <Table style={{background: 'white', color: 'black',textAlign:'center'}}
-            dataSource={ this.state.dataSource}
+            dataSource={ this.state.users}
             columns={ onColumns }
+            
           />
-        </div>
         </div>
     );
   }
