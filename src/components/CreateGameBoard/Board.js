@@ -45,7 +45,6 @@ class Board extends Component {
     
     handleRowChange(value){
       this.setState({row: value});
-      console.log(this.state.row, this.state.col)
     }
 
     handlePlayerChange = (value) => {
@@ -72,11 +71,11 @@ class Board extends Component {
         transform: this.state.player === 'b' ? 'scaleY(-1)' : 'none',
         width: '100%'
       }
-    
+    const {row, col} = this.state
     return (
         <Layout>
-          <Content>
-            <CustomeGame rowCount={this.state.row} colCount={this.state.col} turn={'both'} chessBoard={this.state.initialChessBoard }/>
+          <Content> 
+            <CustomeGame rowCount={row} colCount={col} turn={'both'} chessBoard={this.state.initialChessBoard }/>
           </Content>
           <Sider className={styles.sider}>
             <div>

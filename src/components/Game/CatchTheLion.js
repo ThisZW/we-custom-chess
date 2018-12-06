@@ -35,22 +35,28 @@ class CatchTheLionBoard extends Component {
       squareWidth: null,
       turn: props.turn,
       isMoving: false,
-      colCount: props.colCount,
-      rowCount: props.rowCount,
       square: 100/props.colCount,
       selectedBox: {row: 0, col: 0} //by default
     }
   }
 
-  setInitialSquare = (e) => {
+  componentDidUpdate = (prevProps) => {
+    if(prevProps.colCount !== this.props.colCount)
     this.setState({
-      squareWidth: Math.round(e.state.width/this.state.colCount)
+      square: 100/this.props.colCount,
+    })
+  }
+
+  setInitialSquare = (e) => {
+    console.log()
+    this.setState({
+      squareWidth: Math.round(e.state.width/this.props.colCount)
     })
   }
 
   handleResize = (e) => {
     this.setState({
-      squareWidth: Math.round(e.width/this.state.colCount)
+      squareWidth: Math.round(e.width/this.props.colCount)
     })
   }
 
@@ -64,7 +70,7 @@ class CatchTheLionBoard extends Component {
   handleDragStop = (evt, drag, id) => {
     let board = this.state.chessBoard
     const {row, col} = this.state.selectedBox
-    const {rowCount, colCount} = this.state
+    const {rowCount, colCount} = this.props
     
     //check if it is good to move
     if(row <= rowCount && col <=colCount){
@@ -72,8 +78,7 @@ class CatchTheLionBoard extends Component {
       board[id].col = col
       //console.log(row, col) 
     }
-    
-    //check if something is eaten
+
     board.forEach((v, i) => {
       if (v.row === row && v.col ===col && i!==id)
         v.alive=false
@@ -84,6 +89,7 @@ class CatchTheLionBoard extends Component {
       isMoving: false,
       selectedBox: {row: 0, col: 0}
     })
+
     return evt
   }
 
@@ -100,7 +106,8 @@ class CatchTheLionBoard extends Component {
   }
 
   renderBoxes = () =>{
-    const {square, rowCount, colCount} = this.state
+    const {square} = this.state
+    const {rowCount, colCount} = this.props
 
     const boxStyles = {
       width: `${square}%`,
@@ -110,6 +117,7 @@ class CatchTheLionBoard extends Component {
       pointerEvents: 'none',
       border: '1px solid black'
     }
+
     const highlightBoxStyles = {
       width: `${square}%`,
       paddingBottom: `${square}%`,
@@ -158,7 +166,6 @@ class CatchTheLionBoard extends Component {
 
 
   render(){
-    console.log(this.state)
     //console.log(styles.chessboard)
     return (
       <div className={styles.gameContainer}>
@@ -176,8 +183,8 @@ class CatchTheLionBoard extends Component {
               onStop={this.handleDragStop}
               className="piece"
               square={this.state.square}
-              rowCount={this.state.rowCount}
-              colCount={this.state.colCount}
+              rowCount={this.props.rowCount}
+              colCount={this.props.colCount}
               disabled={this.state.turn !== v.player && this.state.turn !== 'both'}
               key={`piece${i}-${v.row}-${v.col}`} 
               chess={v.chess} player={v.player} 
