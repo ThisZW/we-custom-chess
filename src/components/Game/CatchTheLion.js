@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './CatchTheLion.module.less';
 import resizeAware from 'react-resize-aware';
 import Chess from './ChessPiece';
+import { Button } from 'antd';
 
 const ResizeAware = resizeAware.default || resizeAware
 
@@ -18,9 +19,6 @@ const ResizeAware = resizeAware.default || resizeAware
   {row: 5, col: 3, chess: "ou", player: "a", alive: true},
   {row: 5, col: 4, chess: "kaku", player: "a", alive: true},
 ]
-
-
-
 const rowCount = 6
 const colCount = 5*/
 
@@ -53,6 +51,29 @@ class CatchTheLionBoard extends Component {
       squareWidth: Math.round(e.state.width/this.props.colCount)
     })
   }
+  componentWillReceiveProps(nextProps){
+    if (this.state.rowCount !== nextProps.row) {
+      this.setState({rowCount:nextProps.row});
+      this.forceUpdate();
+    }
+    if (this.state.colCount !== nextProps.col) {
+        this.setState({colCount:nextProps.col,
+        square:100/nextProps.col});
+        this.forceUpdate();
+      }
+
+    if (this.state.chessBoard !== nextProps.chessBoard) {
+      console.log("board changed")
+            this.setState({chessBoard:nextProps.chessBoard});
+            this.forceUpdate();
+    }
+    if (this.state.turn !== nextProps.turn) {
+        console.log("turn changed")
+        this.setState({turn:nextProps.turn});
+        this.forceUpdate();
+      }          
+  }
+
 
   handleResize = (e) => {
     this.setState({
@@ -83,6 +104,9 @@ class CatchTheLionBoard extends Component {
       if (v.row === row && v.col ===col && i!==id)
         v.alive=false
     })
+
+
+    console.log(board)
 
     this.setState({
       chessBoard: board,
@@ -117,7 +141,6 @@ class CatchTheLionBoard extends Component {
       pointerEvents: 'none',
       border: '1px solid black'
     }
-
     const highlightBoxStyles = {
       width: `${square}%`,
       paddingBottom: `${square}%`,
@@ -146,7 +169,8 @@ class CatchTheLionBoard extends Component {
   componentDidMount = () => {
     if (this.state.turn !=='both')
     this.setState({
-      turn: 'a'
+      turn: 'a',
+      player:this.props.player
     })
   }
 
@@ -161,7 +185,7 @@ class CatchTheLionBoard extends Component {
         saveGame.push(item)
       }
     });
-    console.log(saveGame);
+    this.props.sendBoard(saveGame)
   }
 
 
@@ -196,6 +220,7 @@ class CatchTheLionBoard extends Component {
             <div className="player-a">a</div>
             <div className="player-b">b</div>
           </div>
+          <Button onClick={this.submitBoard}>Submit</Button>
       </div>
     )
   }

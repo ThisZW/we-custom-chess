@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import Draggable from 'react-draggable';
 
 class Chess extends Component{
-
   constructor(props){
     super()
   }
