@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { hot } from 'react-hot-loader'
-import { Button, Layout,Input, Modal,} from 'antd'; 
+import { Button, Layout,Input, Modal, Row} from 'antd'; 
 /* 此处注意，如果使用CSS Module，则必须命名css文件为*.module.css的形式 */
 /* More detail can see from https://github.com/codebandits/react-app-rewire-css-modules */
 import OnlineUserList from './OnlineUserList';
@@ -202,13 +202,13 @@ class App extends Component {
           )
            :( 
           <Content width="80%" style={{minHeight:'1000h', margin: '24px 16px 0',alignItems:'center',display:'flex',justifyContent:'center'}}>
-            <Link to='/userList'><Button type='primary'>joint a game room</Button></Link>
+            <Link to='/userList'><Button type='primary'>joint a game room</Button></Link>&nbsp;
             <Link to='/Board'><Button type='primary'>Create game</Button></Link>
-            </Content>
+          </Content>
             )
         }
         
-      <Sider width="20%" style={{background: 'white', color: 'black',textAlign:'center',fontSize:20}}>
+      <Sider width="200" style={{background: 'white', color: 'black',textAlign:'center',fontSize:20}}>
       {
           (this.state.Gamingtime)?(
             <div >
@@ -227,8 +227,10 @@ class App extends Component {
 
           ):(<div>
         <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
-        <Input value={this.state.guestid} onChange={this.handleGuestIDChange} />
-        <Button onClick={this.submitGuestID}>Change Username</Button>
+        <Row>
+          <Input value={this.state.guestid} style={{margin:"10px, 10px 0 10px"}}  onChange={this.handleGuestIDChange} />
+          <Button size="small"  onClick={this.submitGuestID}>Change Username</Button>
+        </Row>
         </div>
       <OnlineUserList users={this.state.users} invite={this.callcomfrim}/>
       </div>)

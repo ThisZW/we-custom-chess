@@ -113,7 +113,7 @@ class CatchTheLionBoard extends Component {
       selectedBox: {row: 0, col: 0}
     })
     
-    this.submitBoard
+    this.submitBoard()
 
     return evt
   }
@@ -217,7 +217,7 @@ class CatchTheLionBoard extends Component {
             })}
           </ResizeAware>
         </div>
-          <Button onClick={this.submitBoard}>Submit</Button>
+          {/** <Button onClick={this.submitBoard}>Submit</Button> **/}
       </div>
     )
   }
