@@ -217,10 +217,6 @@ class CatchTheLionBoard extends Component {
             })}
           </ResizeAware>
         </div>
-          <div className="results">
-            <div className="player-a">a</div>
-            <div className="player-b">b</div>
-          </div>
           <Button onClick={this.submitBoard}>Submit</Button>
       </div>
     )

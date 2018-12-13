@@ -14,4 +14,4 @@ require('./controllers/socket')(server)
 app.use('/api', router)
 
 // When a "message" is received (click on the button), it's logged in the console
-server.listen(PORT, () => console.log(`Listening on port ${port}`))
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`))

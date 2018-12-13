@@ -23,7 +23,7 @@ class RootRouter extends Component {
         <Router history={history}>
         <Layout>
           <Layout.Header style={{minHeight:'100h', color: 'white',textAlign: 'center',fontSize:25}}>
-            We Custome Chess
+            We Custom Emoji Chess
           </Layout.Header>
           <Switch>
             <Route exact path='/' component={Main} />

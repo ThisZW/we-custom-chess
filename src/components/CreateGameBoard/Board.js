@@ -5,6 +5,7 @@ import Inputs from './Inputs';
 import { timingSafeEqual } from 'crypto';
 import CSSModules from 'react-css-modules';
 import styles from './CreateGameBoard.module.less';
+import RuleBoard from './../Game/RuleBoard'
 
 const {Sider, Content} = Layout;
 
@@ -92,11 +93,17 @@ class Board extends Component {
         marginBottom: 0
       }
     };
+    const uploadProps = {
+      action: '//jsonplaceholder.typicode.com/posts/',
+      listType: 'picture',
+      className: 'upload-list-inline',
+    };
     const {row, col} = this.state
     return (
         <Layout>
           <Content> 
             <CustomeGame rowCount={row} colCount={col} turn={'both'} chessBoard={this.state.initialChessBoard }/>
+            <RuleBoard/>
           </Content>
           <Sider width="250" className={styles.sider}>
             <Row>
@@ -152,10 +159,7 @@ class Board extends Component {
               </Select>,
               <img src={`assets/catchthelion/${this.state.piece}.png`} style={pieceImgStyle}/>]
               :
-              <Upload
-                action= '//jsonplaceholder.typicode.com/posts/'
-                listType= 'picture'
-                className= 'upload-list-inline'>
+              <Upload {...uploadProps} > 
                 <Button size="small">
                   <Icon type="upload" /> Upload
                 </Button>
@@ -169,6 +173,7 @@ class Board extends Component {
             </FormItem>
           </Sider>
         </Layout>
+        
     );
   }
 }
