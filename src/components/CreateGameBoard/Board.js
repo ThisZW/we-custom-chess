@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Layout,InputNumber,Select  } from 'antd'; 
+import { Button, Layout,InputNumber,Select,Radio,Row, Col,Form,Upload, Icon} from 'antd'; 
 import CustomeGame from './../Game/CatchTheLion';
 import Inputs from './Inputs';
 import { timingSafeEqual } from 'crypto';
@@ -23,6 +23,7 @@ class Board extends Component {
         piece: "kaku",
         player: "a",
         alive: true,
+        pieceType: "default",
         initialChessBoard:[
           {row: 1, col: 1, chess: "hi", player: "b", alive: true},
           {row: 1, col: 2, chess: "ou", player: "b", alive: true},
@@ -36,6 +37,12 @@ class Board extends Component {
       }
     this.handleColChange = this.handleColChange.bind(this)
     this.handleRowChange = this.handleRowChange.bind(this)
+    }
+
+    handlePieceTypeChange = (e) => {
+      this.setState({
+        pieceType : e.target.value
+      })
     }
 
     handleColChange(value){
@@ -66,40 +73,100 @@ class Board extends Component {
     }
 
   render() {
+    const FormItem = Form.Item
     const pieceImgStyle = {
         backgroundColor: this.state.player === 'a' ? '#007fe14d' : '#1ee1004d',
         transform: this.state.player === 'b' ? 'scaleY(-1)' : 'none',
-        width: '100%'
+        width: '120px'
+    }
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+      style:{
+        marginBottom: 0
       }
+    };
     const {row, col} = this.state
     return (
         <Layout>
           <Content> 
             <CustomeGame rowCount={row} colCount={col} turn={'both'} chessBoard={this.state.initialChessBoard }/>
           </Content>
-          <Sider className={styles.sider}>
-            <div>
-            <div>Columns: <InputNumber size="small" min={1} max={15} defaultValue={this.state.col} onChange={this.handleColChange} /></div>
-            <div>Rows: <InputNumber size="small" min={1} max={15} defaultValue={this.state.row} onChange={this.handleRowChange} /></div>
-            </div>
-            <div>
-            Player:&nbsp;
-            <Select defaultValue="a" size="small" style={{ width: 120 }} onChange={this.handlePlayerChange}>
+          <Sider width="250" className={styles.sider}>
+            <Row>
+              <Col>
+                <FormItem
+                  {...formItemLayout}
+                  label="Columns"
+                >
+                  <InputNumber size="small" min={1} max={15} style={{width: 120}} defaultValue={this.state.col} onChange={this.handleColChange} />
+                </FormItem>
+              </Col>
+              <Col>
+                <FormItem
+                  {...formItemLayout}
+                  label="Rows"
+                >
+                  <InputNumber size="small" min={1} max={15} style={{width: 120}} defaultValue={this.state.row} onChange={this.handleRowChange} />
+                </FormItem>
+              </Col>
+            </Row>
+
+            <FormItem
+              {...formItemLayout}
+              label="Player"
+            >
+              <Select defaultValue="a" size="small" style={{width: 120}} onChange={this.handlePlayerChange}>
                 <Option value="a">A</Option>
                 <Option value="b">B</Option>
-            </Select> 
-            </div>
-            <div>
-            <Select
-              defaultValue={pieceData[0]}
-              style={{ width: 120 }}  
-              onChange={this.handlePieceChange}
+              </Select> 
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Piece"
             >
-              {pieceData.map(piece => <Option key={piece}>{piece}</Option>)}
-            </Select>
-            <img src={`assets/catchthelion/${this.state.piece}.png`} style={pieceImgStyle}/>
-            </div>
-            <Button onClick={this.addPiece}>Add Piece</Button>
+              <Radio.Group size="small" defaultValue="default" onChange={(e) => this.handlePieceTypeChange(e)} buttonStyle="solid">
+                <Radio.Button value="default">Default</Radio.Button>
+                <Radio.Button value="upload">Upload</Radio.Button>
+              </Radio.Group>
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="Choose it"
+            >
+              {this.state.pieceType === "default" ?
+              [<Select
+                size="small"
+                defaultValue={pieceData[0]}
+                style={{ width: 120 }}  
+                onChange={this.handlePieceChange}
+              >
+                {pieceData.map(piece => <Option key={piece}>{piece}</Option>)}
+              </Select>,
+              <img src={`assets/catchthelion/${this.state.piece}.png`} style={pieceImgStyle}/>]
+              :
+              <Upload
+                action= '//jsonplaceholder.typicode.com/posts/'
+                listType= 'picture'
+                className= 'upload-list-inline'>
+                <Button size="small">
+                  <Icon type="upload" /> Upload
+                </Button>
+              </Upload>
+              }
+            </FormItem>
+            <FormItem
+              wrapperCol={{ span: 12, offset: 8 }}
+            >
+            <Button onClick={this.addPiece} size="small" type="primary">Add Piece</Button>
+            </FormItem>
           </Sider>
         </Layout>
     );

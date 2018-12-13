@@ -97,7 +97,6 @@ class CatchTheLionBoard extends Component {
     if(row <= rowCount && col <=colCount){
       board[id].row = row
       board[id].col = col
-      //console.log(row, col) 
     }
 
     board.forEach((v, i) => {
@@ -113,6 +112,8 @@ class CatchTheLionBoard extends Component {
       isMoving: false,
       selectedBox: {row: 0, col: 0}
     })
+    
+    this.submitBoard
 
     return evt
   }

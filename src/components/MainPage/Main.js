@@ -10,6 +10,7 @@ import CustomeGame from './../Game/CatchTheLion';
 const confirm = Modal.confirm;
 
 import SocketIOClient from 'socket.io-client';
+
 const socket = SocketIOClient('http://localhost:3003');
 
 const {Header, Footer, Sider, Content} = Layout;
@@ -194,7 +195,7 @@ class App extends Component {
           (this.state.Gamingtime)? 
 
           ( <Content width="80%"> 
-              <CustomeGame chessBoard={this.state.chessBoard}  row={6} col={5} turn={(this.state.turn)?'a':'b'} 
+              <CustomeGame chessBoard={this.state.chessBoard}  rowCount={6} colCount={5} turn={(this.state.turn)?'a':'b'} 
               player={this.state.player}
               sendBoard={this.sendBoard}/>
           </Content>

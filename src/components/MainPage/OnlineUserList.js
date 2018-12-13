@@ -38,8 +38,8 @@ class UserList extends Component {
       { title: 'Acition', dataIndex: '', key: 'operation' ,render: (text,record,index)=>(
         <span>
         <Popconfirm title="sure invite?" onConfirm={() => this.props.invite(text.name)}>
-                   <button>
-                       <Icon type="delete"/></button>
+          <button>
+              <Icon type="user-add"/></button>
         </Popconfirm>
       </span>        
     ) },

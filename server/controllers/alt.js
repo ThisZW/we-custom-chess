@@ -10,12 +10,10 @@ const models = require('../models');
 const AltController = {
   registerRouter() {
     const router = express.Router();
-
     router.get('/', this.index);
     router.post('/', this.create);
     router.put('/:id', this.update);
     router.delete('/:id', this.delete);
-
     return router;
   },
   index(req, res) {
