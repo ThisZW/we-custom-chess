@@ -7,8 +7,9 @@ class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-        };
-}
+      
+    };
+  }
 
   handleSizeChange = (e) => {
     this.setState({ list: e.target.value });
@@ -32,7 +33,6 @@ class UserList extends Component {
         {this.state.guestid}
         </div>
         <div>
-
         </div>
         </div>
     );

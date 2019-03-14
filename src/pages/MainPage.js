@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { hot } from 'react-hot-loader'
 import { Button, Layout,Input, Modal, Row} from 'antd'; 
 /* 此处注意，如果使用CSS Module，则必须命名css文件为*.module.css的形式 */
 /* More detail can see from https://github.com/codebandits/react-app-rewire-css-modules */
-import OnlineUserList from './OnlineUserList';
-import CustomeGame from './../Game/CatchTheLion';
-
-const confirm = Modal.confirm;
-
+//import OnlineUserList from './OnlineUserList';
 import SocketIOClient from 'socket.io-client';
 
 const socket = SocketIOClient('http://localhost:3003');
 
 const {Header, Footer, Sider, Content} = Layout;
 
-class App extends Component {
+class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +37,7 @@ class App extends Component {
       ]
     }
 
-    const updateBoard = (data)=>{
+    /*const updateBoard = (data)=>{
       this.setState({chessBoard:data})
     }
 
@@ -76,7 +71,6 @@ class App extends Component {
             updateInvite(false)
             updateGaming(true)
             updatePlayer('b')
-            
           },
           onCancel() {
           socket.emit('not accept',sender);
@@ -141,9 +135,10 @@ class App extends Component {
       } 
       this.setState({users:tmp})
     }
-   const existUser=(data)=>{
-    this.setState({guestid:'change to other name'})
-  }
+
+    const existUser=(data)=>{
+      this.setState({guestid:'change to other name'})
+    }*/
 
   }
 
@@ -192,20 +187,19 @@ class App extends Component {
     return (
       <Layout style={{height:'1000px'}} >
           {
-          (this.state.Gamingtime)? 
-
+          /*(this.state.Gamingtime)?
           ( <Content width="80%"> 
               <CustomeGame chessBoard={this.state.chessBoard}  rowCount={6} colCount={5} turn={(this.state.turn)?'a':'b'} 
               player={this.state.player}
               sendBoard={this.sendBoard}/>
+              <RuleBoard/>
           </Content>
-          )
-           :( 
+          ):(*/
           <Content width="80%" style={{minHeight:'1000h', margin: '24px 16px 0',alignItems:'center',display:'flex',justifyContent:'center'}}>
-            <Link to='/userList'><Button type='primary'>joint a game room</Button></Link>&nbsp;
-            <Link to='/Board'><Button type='primary'>Create game</Button></Link>
+            <Link to='/user-list'><Button type='primary'>joint a game room</Button></Link>&nbsp;
+            <Link to='/create-board'><Button type='primary'>Create game</Button></Link>
           </Content>
-            )
+            //)
         }
         
       <Sider width="200" style={{background: 'white', color: 'black',textAlign:'center',fontSize:20}}>
@@ -223,8 +217,6 @@ class App extends Component {
               {this.state.opponent}</div>
               <div>current turn: {(this.state.turn)? 'a':'b'}</div>
             </div>
-
-
           ):(<div>
         <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
         <Row>
@@ -232,7 +224,7 @@ class App extends Component {
           <Button size="small"  onClick={this.submitGuestID}>Change Username</Button>
         </Row>
         </div>
-      <OnlineUserList users={this.state.users} invite={this.callcomfrim}/>
+      {/* <OnlineUserList users={this.state.users} invite={this.callcomfrim}/> */}
       </div>)
         }
 
@@ -241,4 +233,5 @@ class App extends Component {
     );
   }
 }
-export default hot(module)(App);
+
+export default MainPage;

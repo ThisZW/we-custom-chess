@@ -1,30 +1,13 @@
 import React, {Component} from 'react'
 import CSSModules from 'react-css-modules';
-import PropTypes from 'prop-types';
-import styles from './CatchTheLion.module.less';
+import styles from '../../styles/CatchTheLion.module.less';
 import resizeAware from 'react-resize-aware';
-import Chess from './ChessPiece';
-import { Button } from 'antd';
+import Chess from './Chess';
 
 const ResizeAware = resizeAware.default || resizeAware
 
-/*const initialChessBoard = 
-[
-  {row: 2, col: 2, chess: "hi", player: "b", alive: true},
-  {row: 2, col: 3, chess: "ou", player: "b", alive: true},
-  {row: 2, col: 4, chess: "kaku", player: "b", alive: true},
-  {row: 3, col: 3, chess: "fu", player: "b", alive: true},
-  {row: 4, col: 3, chess: "fu", player: "a", alive: true},
-  {row: 5, col: 2, chess: "hi", player: "a", alive: true},
-  {row: 5, col: 3, chess: "ou", player: "a", alive: true},
-  {row: 5, col: 4, chess: "kaku", player: "a", alive: true},
-]
-const rowCount = 6
-const colCount = 5*/
-
-
 @CSSModules(styles)
-class CatchTheLionBoard extends Component {
+class Board extends Component {
   constructor(props){
     super()
     this.state = {
@@ -51,6 +34,7 @@ class CatchTheLionBoard extends Component {
       squareWidth: Math.round(e.state.width/this.props.colCount)
     })
   }
+
   componentWillReceiveProps(nextProps){
     if (this.state.rowCount !== nextProps.row) {
       this.setState({rowCount:nextProps.row});
@@ -73,7 +57,6 @@ class CatchTheLionBoard extends Component {
         this.forceUpdate();
       }          
   }
-
 
   handleResize = (e) => {
     this.setState({
@@ -181,7 +164,7 @@ class CatchTheLionBoard extends Component {
   submitBoard = () =>{
     var tem = this.state.chessBoard
     var saveGame = []
-    tem.forEach(function(item) {
+    tem.forEach( (item) => {
       if (item.alive === true){
         saveGame.push(item)
       }
@@ -189,8 +172,8 @@ class CatchTheLionBoard extends Component {
     this.props.sendBoard(saveGame)
   }
 
-
   render(){
+    const {chessBoard, square, turn, player} = this.state
     //console.log(styles.chessboard)
     return (
       <div className={styles.gameContainer}>
@@ -201,16 +184,16 @@ class CatchTheLionBoard extends Component {
             onResize={this.handleResize}
             style={{width: '100%', position: 'relative', overflow: 'hidden'}}>
             {this.renderBoxes()}
-            {this.state.chessBoard.map((v,i)=>{
+            {chessBoard.map((v,i)=>{
               return <Chess 
               onDrag={this.handleDrag}
               onStart={this.handleDragStart}
               onStop={this.handleDragStop}
               className="piece"
-              square={this.state.square}
+              square={square}
               rowCount={this.props.rowCount}
               colCount={this.props.colCount}
-              disabled={this.state.turn !== v.player && this.state.turn !== 'both'}
+              disabled={turn !== v.player && turn !== 'both'}
               key={`piece${i}-${v.row}-${v.col}`} 
               chess={v.chess} player={v.player} 
               row={v.row} col={v.col} id={i} alive={v.alive}/>
@@ -223,4 +206,4 @@ class CatchTheLionBoard extends Component {
   }
 }
 
-export default CatchTheLionBoard
+export default Board

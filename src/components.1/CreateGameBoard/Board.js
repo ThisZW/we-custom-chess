@@ -73,6 +73,11 @@ class Board extends Component {
       this.setState({initialChessBoard:temBoard})
     }
 
+    sendBoard=(board)=>{
+      //do nothing
+    }
+  
+  
   render() {
     const FormItem = Form.Item
     const pieceImgStyle = {
@@ -94,15 +99,19 @@ class Board extends Component {
       }
     };
     const uploadProps = {
-      action: '//jsonplaceholder.typicode.com/posts/',
-      listType: 'picture',
-      className: 'upload-list-inline',
-    };
+        action: '//jsonplaceholder.typicode.com/posts/',
+        onChange({ file, fileList }) {
+          if (file.status !== 'uploading') {
+            console.log(file, fileList);
+          }
+        },
+      };
+
     const {row, col} = this.state
     return (
         <Layout>
           <Content> 
-            <CustomeGame rowCount={row} colCount={col} turn={'both'} chessBoard={this.state.initialChessBoard }/>
+            <CustomeGame rowCount={row} colCount={col} turn={'both'} chessBoard={this.state.initialChessBoard} sendBoard={() => this.sendBoard()}/>
             <RuleBoard/>
           </Content>
           <Sider width="250" className={styles.sider}>
@@ -139,7 +148,7 @@ class Board extends Component {
               label="Piece"
             >
               <Radio.Group size="small" defaultValue="default" onChange={(e) => this.handlePieceTypeChange(e)} buttonStyle="solid">
-                <Radio.Button value="default">Default</Radio.Button>
+                <Radio.Button value="default">Default</Radio.Button>  
                 <Radio.Button value="upload">Upload</Radio.Button>
               </Radio.Group>
             </FormItem>

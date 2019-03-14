@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Row, Col, Input} from 'antd'
 
 class RuleBoard extends Component {
-
+  
   render(){
     return(
       <Row>
