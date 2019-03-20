@@ -11,7 +11,9 @@ import CatchTheLionBoard from '../components/Game/CatchTheLion';
 import Main from '../components/MainPage/Main';
 import Board from '../components/CreateGameBoard/Board';
 import {Layout} from 'antd';
-
+import AcceptInvites from '../components/AcceptInvites';
+import 'antd/dist/antd.css';
+import {CreateBoardPage, GamePlayingPage, MainPage} from '../pages';
 
 const history = createBrowserHistory();
 const store = configure();
