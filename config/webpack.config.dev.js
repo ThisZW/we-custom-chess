@@ -195,11 +195,14 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: [{
-          loader: 'style-loader' // creates style nodes from JS strings
-        }, {
-          loader: 'css-loader' // translates CSS into CommonJS
-        }, {
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          { loader: 'css-loader', 
+            options: { 
+              modules: true ,
+              localIdentName: '[name]--[local]--[hash:base64:5]'
+            } 
+          }, {
           loader: 'less-loader', // compiles Less to CSS
           options: {
             javascriptEnabled: true

@@ -7,6 +7,14 @@
   },
   "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
-    ["@babel/plugin-proposal-class-properties", { "loose" : true }]
+    ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+    ["react-css-modules", {
+      "filetypes": {
+        ".less": {
+          "syntax": "postcss-less"
+        }
+      },
+      "generateScopedName": "[name]--[local]--[hash:base64:5]"
+    }]
   ]
 }

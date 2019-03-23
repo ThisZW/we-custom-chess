@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Layout,InputNumber,Select,Radio,Row, Col,Form,Upload, Icon} from 'antd'; 
 import Board from '../components/chess-board/Board'
-import CSSModules from 'react-css-modules';
-import styles from '../styles/CreateGameBoard.module.less'
+import '../styles/CreateGameBoard.less'
 import RuleBoard from '../components/chess-board/RuleBoard'
 
 const {Sider, Content} = Layout;
@@ -10,7 +9,6 @@ const {Sider, Content} = Layout;
 const Option = Select.Option;
 const pieceData = ["kaku", "ou","hi",,"fu"];
 
-@CSSModules(styles)
 class CreateBoardPage extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +34,7 @@ class CreateBoardPage extends Component {
       }
     this.handleColChange = this.handleColChange.bind(this)
     this.handleRowChange = this.handleRowChange.bind(this)
-    }
+  }
 
     handlePieceTypeChange = (e) => {
       this.setState({
@@ -112,7 +110,7 @@ class CreateBoardPage extends Component {
             <Board rowCount={row} colCount={col} turn={'both'} chessBoard={this.state.initialChessBoard} sendBoard={() => this.sendBoard()}/>
             <RuleBoard/>
           </Content>
-          <Sider width="250" className={styles.sider}>
+          <Sider width="250" styleName="sider" theme="light">
             <Row>
               <Col>
                 <FormItem

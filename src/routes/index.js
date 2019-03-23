@@ -8,8 +8,9 @@ import UserList from '../containers/User/UserList';
 import NotFound from '../common/NotFound/NotFound';
 import {Layout} from 'antd';
 import AcceptInvites from '../components/AcceptInvites';
-
 import {CreateBoardPage, GamePlayingPage, MainPage} from '../pages';
+
+import 'antd/dist/antd.css'
 
 const history = createBrowserHistory();
 const store = configure();

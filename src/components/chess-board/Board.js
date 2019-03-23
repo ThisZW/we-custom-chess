@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
-import CSSModules from 'react-css-modules';
-import styles from '../../styles/CatchTheLion.module.less';
+import '../../styles/CatchTheLion.less';
 import resizeAware from 'react-resize-aware';
 import Chess from './Chess';
 
 const ResizeAware = resizeAware.default || resizeAware
 
-@CSSModules(styles)
 class Board extends Component {
   constructor(props){
     super()
@@ -176,8 +174,8 @@ class Board extends Component {
     const {chessBoard, square, turn, player} = this.state
     //console.log(styles.chessboard)
     return (
-      <div className={styles.gameContainer}>
-        <div className={styles.chessboard}>
+      <div styleName="gameContainer">
+        <div styleName="chessboard">
           <ResizeAware
             ref={this.setInitialSquare}
             onlyEvent
