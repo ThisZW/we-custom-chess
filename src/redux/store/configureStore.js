@@ -24,4 +24,5 @@ function configure(initialState) {
   }
   return store;
 }
+
 export default configure;

@@ -31,3 +31,4 @@ export const fetchAllUserList = () => (dispatch) => {
             dispatch(getAllUserListFail());
           }); 
 };
+

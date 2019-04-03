@@ -25,6 +25,7 @@ const userRegisterFail = () => ({
 export const resetRegisterStatus = () => ({
   type: RESET_REGISTER_STATUS
 });
+
 export const postUserRegister = (postData) => (dispatch, getState) => {
   dispatch(userRegister());
   return http.post('/user/register', postData)
@@ -36,6 +37,7 @@ export const postUserRegister = (postData) => (dispatch, getState) => {
             dispatch(userRegisterFail());
           }); 
 };
+
 // 用户登陆
 const userLogin = () => ({
   type: USER_LOGIN,

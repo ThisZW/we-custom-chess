@@ -14,3 +14,6 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
 export const USER_LOGIN_FAIL = 'USER_LOGIN_FAIL';
 export const RESET_LOGIN_STATUS = 'RESET_LOGIN_STATUS';
+
+//Guest ID Generate
+export const GUEST_ID_GENERATED = 'GUEST_ID_GENERATED'
