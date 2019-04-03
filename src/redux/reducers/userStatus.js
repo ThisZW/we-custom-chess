@@ -7,6 +7,7 @@ const initialState = {
 }
 
 const userStatus = ( state = initialState, action ) => {
+    console.log(action)
     switch(action.type){
         case GUEST_ID_GENERATED:
             return {

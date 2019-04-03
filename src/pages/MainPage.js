@@ -16,7 +16,7 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      guestid : '',
+      guestId : '',
       case: '0',
       messages : '',
       users:'',
@@ -144,10 +144,16 @@ class MainPage extends Component {
 
   }
 
+  componentWillReceiveProps = (props) => {
+    this.setState({
+      ...props
+    })
+  }
+
   componentDidMount() {
-    if(this.state.guestid === ''){
+    if(this.state.guestId === ''){
       var tmpname = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 7)
-      this.setState({ guestid: tmpname,
+      this.setState({ guestId: tmpname,
       invite:false,
       inviting:false});
       socket.emit('changeUserName', tmpname);
@@ -155,19 +161,14 @@ class MainPage extends Component {
   }
 
 
- submitGuestID=()=>{
-  socket.emit('changeUserName', this.state.guestid);
-  console.log(this.state.guestid);
-}
+  submitGuestID=()=>{
+    this.props.setGuestId('hahahahaha')
+    socket.emit('changeUserName', this.state.guestId);
+    console.log(this.state.guestId);
+  }
 
   handleCaseChange = (e) => {
     this.setState({ case: e.target.value });
-  }
-
-
-  handleGuestIDChange = (e) =>{
-    this.setState({guestid:e.target.value})
-
   }
 
 
@@ -212,7 +213,7 @@ class MainPage extends Component {
               <div>
               Player {this.state.player}:
               </div>
-              {this.state.guestid}
+              {this.state.guestId}
               </div>
               <div style={{height:"200px"}}>
               <div>player 2:</div>
@@ -222,9 +223,9 @@ class MainPage extends Component {
           ):(<div>
         <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
         <Row>
-          <Input value={this.state.guestid} style={{margin:"10px, 10px 0 10px"}}  onChange={this.handleGuestIDChange} />
-          <Button size="small"  onClick={this.props.setGuestId}
-          //onClick={this.submitGuestID}
+          <Input value={this.state.guestId} style={{margin:"10px, 10px 0 10px"}}/>
+          <Button size="small"
+          onClick={this.submitGuestID}
           >
             Change Username
           </Button>
@@ -241,7 +242,10 @@ class MainPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  state: state
+  guestId: state.userStatus.guestId
 })
 
-export default connect(mapStateToProps,{ setGuestId })(MainPage)
+export default connect(
+  mapStateToProps,
+  { setGuestId }
+)(MainPage)
