@@ -21,6 +21,7 @@ class CreateBoardPage extends Component {
         player: "a",
         alive: true,
         pieceType: "default",
+        fileList: [],
         initialChessBoard:[
           {row: 1, col: 1, chess: "hi", player: "b", alive: true},
           {row: 1, col: 2, chess: "ou", player: "b", alive: true},
@@ -36,51 +37,70 @@ class CreateBoardPage extends Component {
     this.handleRowChange = this.handleRowChange.bind(this)
   }
 
-    handlePieceTypeChange = (e) => {
+  handleUploadChange = ({file, fileList}) => {
+    this.setState({ fileList })
+  }
+
+  handlePieceTypeChange = (e) => {
+    this.setState({
+      pieceType : e.target.value
+    })
+  }
+  
+  handleColChange(value){
+    this.setState({col: value});
+    console.log(this.state.row, this.state.col)
+  }
+  
+  handleRowChange(value){
+    this.setState({row: value});
+  }
+
+  handlePlayerChange = (value) => {
       this.setState({
-        pieceType : e.target.value
+        player: value,
+      });
+    }
+
+  handlePieceChange = (value) => {
+      this.setState({
+        piece: value,
+      });
+    }
+
+  addPiece=()=>{
+    if(this.state.pieceType === "default"){
+      let temBoard = this.state.initialChessBoard;
+      temBoard.push({
+        row: 1, 
+        col: 1, 
+        chess: this.state.piece, 
+        player: this.state.player, 
+        alive: true
+      });
+      this.setState({
+        initialChessBoard:temBoard
       })
+    } else {
+      
     }
+  }
 
-    handleColChange(value){
-      this.setState({col: value});
-      console.log(this.state.row, this.state.col)
-    }
-    
-    handleRowChange(value){
-      this.setState({row: value});
-    }
-
-    handlePlayerChange = (value) => {
-        this.setState({
-          player: value,
-        });
-      }
-
-    handlePieceChange = (value) => {
-        this.setState({
-          piece: value,
-        });
-      }
-
-    addPiece=()=>{
-      var temBoard = this.state.initialChessBoard;
-      temBoard.push({row: 1, col: 1, chess: this.state.piece, player: this.state.player, alive: true});
-      this.setState({initialChessBoard:temBoard})
-    }
-
-    sendBoard=(board)=>{
-      //do nothing
-    }
+  sendBoard=(board)=>{
+    //do nothing
+  }
   
   
   render() {
+
     const FormItem = Form.Item
+
     const pieceImgStyle = {
         backgroundColor: this.state.player === 'a' ? '#007fe14d' : '#1ee1004d',
         transform: this.state.player === 'b' ? 'scaleY(-1)' : 'none',
         width: '120px'
     }
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -94,16 +114,16 @@ class CreateBoardPage extends Component {
         marginBottom: 0
       }
     };
-    const uploadProps = {
-        action: '//jsonplaceholder.typicode.com/posts/',
-        onChange({ file, fileList }) {
-          if (file.status !== 'uploading') {
-            console.log(file, fileList);
-          }
-        },
-      };
 
-    const {row, col} = this.state
+    const uploadProps = {
+      listType: "picture-card",
+      fileList: this.state.fileList,
+      showUploadList: "false",
+      action: 'http://jsonplaceholder.typicode.com/posts//',
+      onChange: this.handleUploadChange
+    };
+
+    const {row, col, fileList} = this.state
     return (
         <Layout>
           <Content> 
@@ -164,10 +184,12 @@ class CreateBoardPage extends Component {
               </Select>,
               <img src={`assets/catchthelion/${this.state.piece}.png`} style={pieceImgStyle}/>]
               :
-              <Upload {...uploadProps} > 
+              <Upload {...uploadProps} >
+                {fileList.length >= 2 ? null :
                 <Button size="small">
                   <Icon type="upload" /> Upload
                 </Button>
+                }
               </Upload>
               }
             </FormItem>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button, Layout,Input, Modal, Row} from 'antd'; 
+import { setGuestId } from '../redux/actions/UserStatus'
 /* 此处注意，如果使用CSS Module，则必须命名css文件为*.module.css的形式 */
 /* More detail can see from https://github.com/codebandits/react-app-rewire-css-modules */
 //import OnlineUserList from './OnlineUserList';
@@ -221,7 +223,11 @@ class MainPage extends Component {
         <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
         <Row>
           <Input value={this.state.guestid} style={{margin:"10px, 10px 0 10px"}}  onChange={this.handleGuestIDChange} />
-          <Button size="small"  onClick={this.submitGuestID}>Change Username</Button>
+          <Button size="small"  onClick={this.props.setGuestId}
+          //onClick={this.submitGuestID}
+          >
+            Change Username
+          </Button>
         </Row>
         </div>
       {/* <OnlineUserList users={this.state.users} invite={this.callcomfrim}/> */}
@@ -234,4 +240,8 @@ class MainPage extends Component {
   }
 }
 
-export default MainPage;
+const mapStateToProps = state => ({
+  state: state
+})
+
+export default connect(mapStateToProps,{ setGuestId })(MainPage)

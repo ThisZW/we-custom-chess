@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Table } from 'antd';
 import { Button, Radio, Icon,InputNumber } from 'antd';
 import { timingSafeEqual } from 'crypto';
+import { setUserStatus } from '../../redux/actions/UserStatus'
 
 class UserList extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       guestid:'abc',
-      
     };
   }
 
@@ -18,6 +19,10 @@ class UserList extends Component {
 
   onChange(value) {
     this.props.callbackFromParent(value);
+  }
+
+  componentDidMount = () => {
+    this.props.setUserStatus()
   }
 
   render() {
@@ -31,7 +36,7 @@ class UserList extends Component {
     return (
         <div>
         <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
-        {this.state.guestid}
+          {this.state.guestid}
         </div>
         <div>
         </div>
@@ -39,4 +44,7 @@ class UserList extends Component {
     );
   }
 }
-export default UserList;
+export default connect(
+  {},
+  { setUserStatus }
+)(UserList)
