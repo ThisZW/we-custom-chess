@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Layout,Input, Modal, Row} from 'antd'; 
-import { setGuestId } from '../redux/actions/UserStatus'
+import { Button, Layout,Input, Row,Modal} from 'antd'; 
+import { setGuestId} from '../redux/actions/UserStatus'
+import{setGameInfo} from '../redux/actions/Game'
+import OnlineUserList from '../components/OnlineUserList'
 /* 此处注意，如果使用CSS Module，则必须命名css文件为*.module.css的形式 */
 /* More detail can see from https://github.com/codebandits/react-app-rewire-css-modules */
-//import OnlineUserList from './OnlineUserList';
-import SocketIOClient from 'socket.io-client';
-
-const socket = SocketIOClient('http://localhost:3003');
-
+const confirm = Modal.confirm;
 const {Header, Footer, Sider, Content} = Layout;
+
+
+//testing calling function
+import * as cSocket from '../socket/ConfirmSocket'
 
 class MainPage extends Component {
   constructor(props) {
@@ -19,34 +21,58 @@ class MainPage extends Component {
       guestId : '',
       case: '0',
       messages : '',
-      users:'',
-      opponent:'',
-      opponentid:'',
       inviting: false,
       acceptingInvite: false,
-      Gamingtime:false,
+      gamingTime:false,
       player:'',
       turn:true,
-      chessBoard:[
-        {row: 2, col: 2, chess: "hi", player: "b", alive: true},
-        {row: 2, col: 3, chess: "ou", player: "b", alive: true},
-        {row: 2, col: 4, chess: "kaku", player: "b", alive: true},
-        {row: 3, col: 3, chess: "fu", player: "b", alive: true},
-        {row: 4, col: 3, chess: "fu", player: "a", alive: true},
-        {row: 5, col: 2, chess: "hi", player: "a", alive: true},
-        {row: 5, col: 3, chess: "ou", player: "a", alive: true},
-        {row: 5, col: 4, chess: "kaku", player: "a", alive: true},
-      ]
     }
 
+    cSocket.repeatedUserName((err,onlineUsers) => this.setState({guestId:'set to other name'}))
+    
+    cSocket.receiveInvite((err,sender) => openConfirm(sender))
+    
+    cSocket.accept((err,sender) => acceptInvite('a',sender))
+
+    const acceptInvite=(turn,opponentId)=>{
+      var gameInfo ={
+        guestId:this.state.guestId,
+        opponent:opponentId.name,
+        opponentId:opponentId.id,
+        player:turn,
+        gamingTime:true,
+        inviting:true};
+      var tmp = JSON.stringify(gameInfo)
+      localStorage.setItem('gameInfo',tmp);
+      this.props.history.push('/game-in-progress')
+    }
+
+    const openConfirm=(sender)=>{
+      console.log('received invite')
+      if(this.state.inviting === false){
+        this.setState({inviting:true})
+        confirm({
+          title: 'Invite',
+          content: `player${sender.name} want to play chess with you?`,
+          onOk() {
+            console.log(`accept ${sender.name} invite`)
+            cSocket.sendReceiveNotice(sender)
+            console.log('i want to cry')
+            acceptInvite('b',sender)
+          },
+          onCancel() {
+          cSocket.rejectNotice(sender)
+          updateInvite(false)
+          updateGaming(false)
+        },
+        }) 
+      }
+    }
+
+  }
     /*const updateBoard = (data)=>{
       this.setState({chessBoard:data})
     }
-
-    socket.on('userExists', function(data) {
-      existUser(data)
-    })
-
 
     socket.on('receive pm', function(board) {
       console.log(board)
@@ -55,69 +81,9 @@ class MainPage extends Component {
     })
 
 
-    socket.on('users', function(data) {
-      updpateUsers(data)
-    })
-
-
-    socket.on('reveiveInvite', function(sender) {
-      if(checkInvite() === false){
-        updateInvite(true)
-        confirm({
-          title: 'Invite',
-          content: `player${sender.name} want to play chess with you?`,
-          onOk() {
-            updateOpponent(sender)
-            console.log(`${socket.name} accept ${sender.name} invite`)
-            socket.emit('accept',sender);
-            updateInvite(false)
-            updateGaming(true)
-            updatePlayer('b')
-          },
-          onCancel() {
-          socket.emit('not accept',sender);
-          updateInvite(false)
-          updateGaming(false)
-        },
-        }) 
-      }
-    })
-
     const updateturn=()=>{
       this.setState({turn:!this.state.turn})
     }
-
-    const updatePlayer=(data)=>{
-      this.setState({player:data})
-    }
-
-    const checkInvite=()=>{
-      return this.state.inviting
-    }
-
-    const updateGaming=(data)=>{
-      this.setState({Gamingtime:data})
-    }
-
-    const updateInvite=(data)=>{
-      this.setState({acceptingInvite:data})
-    }
-
-    const updateOpponent=(data)=>{
-      this.setState({opponent:data.name,opponentid:data.id})
-    }
-
-    const updateInviting=(data)=>{
-      this.setState({inviting:data})
-    }
-    
-    socket.on('accept', function(sender) {
-      updateOpponent(sender)
-      updateInviting(true)
-      updateGaming(true)
-      updatePlayer('a')
-      console.log("game accept")
-    })
 
     socket.on('not accept', function(sender) {
       updateOpponent('')
@@ -125,24 +91,15 @@ class MainPage extends Component {
       console.log("game false")
     })
 
-    const updpateUsers=(data)=>{
-      console.log(data);
-      var tmp =[]
-      var y = 0
-      for (var i = 0; i < data.length; i++) {
-        if(data[i].userId !=this.state.guestid ){
-          tmp.push({key:y.toString(),name:data[i].userId})
-          y++;
-        }
-      } 
-      this.setState({users:tmp})
-    }
+    */
 
-    const existUser=(data)=>{
-      this.setState({guestid:'change to other name'})
-    }*/
+//receive invite
 
-  }
+
+
+//accept invite as player
+
+
 
   componentWillReceiveProps = (props) => {
     this.setState({
@@ -150,25 +107,27 @@ class MainPage extends Component {
     })
   }
 
-  componentDidMount() {
+  componentDidMount=()=>{
     if(this.state.guestId === ''){
-      var tmpname = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 7)
-      this.setState({ guestId: tmpname,
+      var tmpName = Math.random().toString(36).substring(2, 5) + Math.random().toString(36).substring(2, 7)
+      this.setState({
       invite:false,
       inviting:false});
-      socket.emit('changeUserName', tmpname);
+      this.props.setGuestId(tmpName)
+      cSocket.changeUserName(tmpName);
     }
   }
 
 
   submitGuestID=()=>{
-    this.props.setGuestId('hahahahaha')
-    socket.emit('changeUserName', this.state.guestId);
+    //this.props.setGuestId('hahahahaha')
+    cSocket.changeUserName(this.state.guestId);
     console.log(this.state.guestId);
   }
 
   handleCaseChange = (e) => {
-    this.setState({ case: e.target.value });
+    console.log(e.target.value)
+    this.props.setGuestId(e.target.value)
   }
 
 
@@ -206,46 +165,29 @@ class MainPage extends Component {
         }
         
       <Sider width="200" style={{background: 'white', color: 'black',textAlign:'center',fontSize:20}}>
-      {
-          (this.state.Gamingtime)?(
-            <div >
-              <div height="200px" style={{height:"200px"}}>
-              <div>
-              Player {this.state.player}:
-              </div>
-              {this.state.guestId}
-              </div>
-              <div style={{height:"200px"}}>
-              <div>player 2:</div>
-              {this.state.opponent}</div>
-              <div>current turn: {(this.state.turn)? 'a':'b'}</div>
-            </div>
-          ):(<div>
-        <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
-        <Row>
-          <Input value={this.state.guestId} style={{margin:"10px, 10px 0 10px"}}/>
-          <Button size="small"
-          onClick={this.submitGuestID}
-          >
-            Change Username
-          </Button>
-        </Row>
+        <div>
+          <div style={{color:'white',textAlign:'center',fontSize:20,color:'black'}}>
+          <Row>
+            <Input value={this.state.guestId} style={{margin:"10px, 10px 0 10px"}} onChange={this.handleCaseChange}/>
+            <Button size="small" onClick={this.submitGuestID} >
+              Change Username
+            </Button>
+          </Row>
+          </div>
+          <OnlineUserList guestId={this.state.guestId} />
         </div>
-      {/* <OnlineUserList users={this.state.users} invite={this.callcomfrim}/> */}
-      </div>)
-        }
-
       </Sider>
       </Layout>
     );
   }
 }
 
+
 const mapStateToProps = state => ({
-  guestId: state.userStatus.guestId
+  guestId: state.userStatus.guestId,
 })
 
 export default connect(
   mapStateToProps,
-  { setGuestId }
+  { setGuestId, setGameInfo}
 )(MainPage)

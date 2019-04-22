@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
 import { Button, Radio, Icon,Popconfirm } from 'antd';
-import SocketIOClient from 'socket.io-client';
-const socket = SocketIOClient('http://localhost:3003');
+
 
 class AccpetInvites extends Component {
   constructor(props) {

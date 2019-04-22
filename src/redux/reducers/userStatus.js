@@ -1,5 +1,6 @@
 import {
-    GUEST_ID_GENERATED
+    GUEST_ID_GENERATED,
+    FETCH_ONLINE_USER_LIST
 } from '../../constants/ActionTypes'
 
 const initialState = {
