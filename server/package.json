@@ -4,7 +4,8 @@
   "description": "Starter code for an Express/Sequelize backend.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -L app.js",
+    "start": "node app.js",
+    "dev": "nodemon -L app.js",
     "test": "jest"
   },
   "author": "Edgardo Molina",
