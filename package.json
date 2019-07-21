@@ -1,7 +1,9 @@
 {
-  "name": "express-react-cli",
+  "name": "we-custom-chess",
   "version": "0.1.0",
-  "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "dependencies": {
     "@babel/core": "7.1.0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
@@ -90,8 +92,9 @@
   "scripts": {
     "react-start": "node scripts/start.js",
     "react-build": "node scripts/build.js",
-    "start": "concurrently \"node scripts/start.js\" \"cd server && yarn start\"",
-    "build": "concurrently \"node scripts/build.js\" \"cd server && yarn start\"",
+    "start-both": "concurrently \"node scripts/start.js\" \"cd server && yarn start\"",
+    "start": "npm install && cd server && yarn start",
+    "build": "npm install --only=dev --no-shrinkwrap && node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {
@@ -156,7 +159,12 @@
       "node"
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThisZW/we-custom-chess"
+  },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "license": "MIT"
 }
