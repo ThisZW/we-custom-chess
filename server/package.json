@@ -19,6 +19,7 @@
     "express-handlebars": "^3.0.0",
     "flatmap-stream": "^0.0.1-security",
     "nodemon": "^1.18.5",
+    "path": "^0.12.7",
     "pg": "^7.3.0",
     "pg-hstore": "^2.3.2",
     "socket.io": "^2.2.0"
