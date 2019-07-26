@@ -93,8 +93,9 @@
     "react-start": "node scripts/start.js",
     "react-build": "node scripts/build.js",
     "start-both": "concurrently \"node scripts/start.js\" \"cd server && yarn start\"",
-    "start": "npm install && cd server && npm install && npm start",
+    "start": "cd server && npm start",
     "build": "npm install --only=dev --no-shrinkwrap && node scripts/build.js",
+    "heroku-postbuild": "npm install && cd server && npm install",
     "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {

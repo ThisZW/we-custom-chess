@@ -12,6 +12,7 @@ const server = http.createServer(app)
 require('./controllers/socket')(server)
 
 app.use('/api', router)
+app.use(express.static(path.join(__dirname, '../build')));
 
 // When a "message" is received (click on the button), it's logged in the console
 server.listen(port, () => console.log(`Listening on port ${port}`))
