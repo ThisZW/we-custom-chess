@@ -15,4 +15,4 @@ react, antd, less modules
 ```
 > go to server/config to config your mongodb first.
 
-**More tutorial about setup：https://juejin.im/post/5ae3317e6fb9a07ac021fba4**
+Live Demo: https://we-custom-chess.herokuapp.com/
